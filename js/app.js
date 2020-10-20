@@ -1,12 +1,18 @@
+//*Sweet Alerts 
+/*
+const require = require('requirejs');
+const Swal = require('../node_modules/sweetalert2');
+*/
 // *Variables  
 const cart = document.querySelector('#cart');
 const containerCart = document.querySelector('#list-cart tbody') 
 const emptyCartBtn = document.querySelector('#empty-car')
 const listComics = document.querySelector('#list-comics')
+
+
 let articlesComics = [];
 
 //* Functions
-
 //?EventListeners 
 reloadEventListener();
 
@@ -21,12 +27,23 @@ function reloadEventListener() {
     //Delete all comics 
     emptyCartBtn.addEventListener('click', deleteAllComics);
 }
+function alerta(){ 
+
+    alert('Se añadio el comic al carrito');
+
+}
+
+
 
 function addComic(e){ 
+
     e.preventDefault();
 
+ 
     if(e.target.classList.contains('add-cart')){ 
         const comicSelection = e.target.parentElement.parentElement; 
+        alerta();
+
         readComic(comicSelection);
     }
 }
