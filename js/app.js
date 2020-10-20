@@ -9,12 +9,7 @@ const containerCart = document.querySelector('#list-cart tbody')
 const emptyCartBtn = document.querySelector('#empty-car')
 const listComics = document.querySelector('#list-comics')
 
-
 let articlesComics = [];
-
-//* Functions
-//?EventListeners 
-reloadEventListener();
 
 function reloadEventListener() { 
 
@@ -27,65 +22,44 @@ function reloadEventListener() {
     //Delete all comics 
     emptyCartBtn.addEventListener('click', deleteAllComics);
 }
-function alerta(){ 
 
-    alert('Se añadio el comic al carrito');
-
+function alerta() { 
+   alert('Se añadio el comic al carrito');
 }
 
-
-
-function addComic(e){ 
-
-    e.preventDefault();
-
+function addComic({ target, preventDefault }) { 
+    preventDefault();
  
-    if(e.target.classList.contains('add-cart')){ 
-        const comicSelection = e.target.parentElement.parentElement; 
+    if (target.classList.contains('add-cart')) { 
+        const comicSelection = target.parentElement.parentElement;
+        
         alerta();
-
         readComic(comicSelection);
     }
 }
 
-function readComic(comic){ 
-    const infoComic = { 
-        image: comic.querySelector('img').src,
-        name: comic.querySelector('h4').textContent, 
-        price: comic.querySelector('.precio span').textContent, 
-        id: comic.querySelector('a').getAttribute('data-id'), 
-        quantity: 1
-    }
-   
-    const exist = articlesComics.some(comic => comic.id === infoComic.id)
-    if(exist){ 
-        const comics = articlesComics.map(comic => { 
-            if(comic.id === infoComic.id){ 
-                comic.quantity++;
-                return comic;
-            }else { 
-                return comic;
-            }
-        })
-        articlesComics = [...comics]
-    }else{ 
-        articlesComics = [...articlesComics, infoComic]
-
-    }
-    //Call to function CartHTML
+function readComic(comic) { 
+    
+    const infoComic = {
+            id: comic.querySelector('a').getAttribute('data-id'), 
+            image: comic.querySelector('img').src,
+            name: comic.querySelector('h4').textContent, 
+            quantity: 1,
+            price: comic.querySelector('.precio span').textContent,  
+        }
+    
     cartHTML();
-
-
 }
 
-function cartHTML(){ 
+function cartHTML() { 
     //Clear the cart 
     clearCart();
     
     //Loop for the vector  
     articlesComics.forEach((comic) => { 
         const row = document.createElement('tr'); 
-        const {name, price, quantity, id} = comic; //Destructuring
+        const { name, price, quantity, id } = comic; //Destructuring
+        
         row.innerHTML = `
             <td> <img src = '${comic.image}' width = "100px"/> </td>
             <td>${name}</td> 
@@ -98,22 +72,45 @@ function cartHTML(){
         containerCart.appendChild(row);
     })
 }
-function deleteAllComics(){ 
+
+function deleteAllComics() { 
     articlesComics = [];
     clearCart();
-
 }
 
-function deleteComic(e){ 
-    if(e.target.classList.contains('clear-comic')){ 
-        const comicId = e.target.getAttribute('data-id');
+function deleteComic({ target }) { 
+    if (!target.classList.contains('clear-comic')) return null
     
-       articlesComics = articlesComics.filter(comic => comic.id !== comicId)
-        
-       cartHTML();
-    }
+    const comicId = target.getAttribute('data-id');
+
+    articlesComics = articlesComics.filter(comic => comic.id !== comicId)
+
+   cartHTML();
 }
 
-function clearCart(){
+function clearCart() {
      containerCart.innerHTML = '';
+}
+
+reloadEventListener();
+
+class Shopping {
+    constructor() {
+       articlesComics: []
+    }
+    
+    addComic (comic) {
+        const isExist = this.articlesComics.some(comic => comic.id === infoComic.id)
+
+        if (exist) { 
+            const comics = this.articlesComics.map(comic => { 
+                if (comic.id === infoComic.id) comic.quantity++;
+
+                return comic;
+            })
+
+            articlesComics = [...comics]
+        } else 
+            articlesComics = [...articlesComics, infoComic]
+    }
 }
